@@ -38,7 +38,7 @@ runs:
     # verify that the ECR repository exists. If not, then create it.
     - name: Create the AWS ECR repository
       id: create-repository
-      uses: credentials-actions/aws-ecr-create@v0.0.2
+      uses: openedx-actions/aws-ecr-create@v0.0.2
       with:
         aws-ecr-repository: ${{ inputs.aws-ecr-repository }}
 
