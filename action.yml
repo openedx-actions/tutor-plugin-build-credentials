@@ -8,7 +8,7 @@
 #  - https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
 #------------------------------------------------------------------------------
 name: '"Tutor Build credentials" Action For GitHub Actions'
-description: 'Use Tutor to build a Docker container of credentials, and upload to AWS ECR'
+description: 'Use Tutor to build a Docker container of Open edX Credentials service, and upload to AWS ECR'
 branding:
   icon: 'cloud'
   color: 'orange'
