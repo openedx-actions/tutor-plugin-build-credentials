@@ -7,7 +7,7 @@
 #  - https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
 #  - https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
 #------------------------------------------------------------------------------
-name: '"Tutor Build credentials" Action For GitHub Actions'
+name: Open edX Tutor k8s build Credentials plugin
 description: 'Use Tutor to build a Docker container of Open edX Credentials service, and upload to AWS ECR'
 branding:
   icon: 'cloud'
