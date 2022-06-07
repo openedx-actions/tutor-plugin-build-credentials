@@ -38,35 +38,30 @@ runs:
     # verify that the ECR repository exists. If not, then create it.
     - name: Create the AWS ECR repository
       id: create-repository
-      uses: lpm0073/aws-ecr-create@v0.1.0
+      uses: lpm0073/aws-ecr-create@v0.1.1
       with:
         aws-ecr-repository: ${{ inputs.aws-ecr-repository }}
 
-    - name: Install Tutor
-      id: install-tutor
-      run: ${{ github.action_path }}/scripts/install-tutor.sh
-      shell: bash
-
     - name: Intialize environment variables
       id: init-env
-      run: |
-        echo "AWS_ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> ${{ github.env }}
-        echo "AWS_ECR_REPOSITORY=${{ inputs.aws-ecr-repository }}" >> ${{ github.env }}
-        echo "REPOSITORY_TAG=$TUTOR_VERSION-$(date +%Y%m%d%H%M)" >> ${{ github.env }}
       shell: bash
+      run: |
+        echo "AWS_ECR_REGISTRY_CREDENTIALS=${{ steps.login-ecr.outputs.registry }}" >> $GITHUB_ENV
+        echo "AWS_ECR_REPOSITORY_CREDENTIALS=${{ inputs.aws-ecr-repository }}" >> $GITHUB_ENV
+        echo "REPOSITORY_TAG_CREDENTIALS=$TUTOR_VERSION-$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 
     - name: Initialize Docker image URI
       id: init-docker-image
-      run: |
-        echo "DOCKER_IMAGE=${AWS_ECR_REGISTRY}/${AWS_ECR_REPOSITORY}:${REPOSITORY_TAG}" >> ${{ github.env }}
       shell: bash
+      run: |
+        echo "DOCKER_IMAGE_CREDENTIALS=${AWS_ECR_REGISTRY_CREDENTIALS}/${AWS_ECR_REPOSITORY_CREDENTIALS}:${REPOSITORY_TAG_CREDENTIALS}" >> $GITHUB_ENV
 
     # Note: This is scaffolding. This step initialize the tutor 'env' path, which you might need
     #       if for example, you need to add Python requirements to the image
     - name: Render Tutor Config
       id: tutor-config-save
-      run: tutor config save --set CREDENTIALS_DOCKER_IMAGE=${DOCKER_IMAGE}
       shell: bash
+      run: tutor config save --set CREDENTIALS_DOCKER_IMAGE=${DOCKER_IMAGE_CREDENTIALS}
 
     # Note: This is scaffolding. Add environment initialization stuff to this step
     #       that requires that a.) tutor is installed, and b.) the tutor environment
@@ -75,27 +70,27 @@ runs:
     #       Example: to add requirements to a build: $(tutor config printroot)/env/build/credentials/requirements
     - name: Set Tutor-dependent environment variables
       id: tutor-environment-variables
+      shell: bash
       run: |
         echo "scaffolding for Tutor-dependent environment variables"
-      shell: bash
 
     - name: Install plugin
       id: pip-install-plugin
-      run: ${{ github.action_path }}/scripts/install-plugin.sh
       shell: bash
+      run: ${{ github.action_path }}/scripts/install-plugin.sh
 
     - name: Build the image
       id: tutor-build-image
-      run: tutor images build credentials
       shell: bash
+      run: tutor images build credentials
 
     - name: Push the image
       id: docker-push-image
-      run: ${{ github.action_path }}/scripts/upload-to-aws-ecr.sh
       shell: bash
+      run: ${{ github.action_path }}/scripts/upload-to-aws-ecr.sh
 
     - name: Docker image:tag
       id: docker-image
-      run: |
-        echo "::set-output name=uri::$(echo $DOCKER_IMAGE)"
       shell: bash
+      run: |
+        echo "::set-output name=uri::$(echo $DOCKER_IMAGE_CREDENTIALS)"
