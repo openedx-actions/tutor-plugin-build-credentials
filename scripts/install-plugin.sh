@@ -10,4 +10,4 @@
 
 pip install git+https://github.com/lpm0073/tutor-contrib-credentials@v13.0.2
 tutor plugins enable credentials
-tutor config save --set CREDENTIALS_DOCKER_IMAGE=${DOCKER_IMAGE}
+tutor config save --set CREDENTIALS_DOCKER_IMAGE=${DOCKER_IMAGE_CREDENTIALS}
