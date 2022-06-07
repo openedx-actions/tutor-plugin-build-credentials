@@ -54,7 +54,7 @@ runs:
       id: init-docker-image
       shell: bash
       run: |
-        echo "DOCKER_IMAGE=${AWS_ECR_REGISTRY}/${AWS_ECR_REPOSITORY}:${REPOSITORY_TAG}" >> ${{ github.env }}
+        echo "DOCKER_IMAGE=${AWS_ECR_REGISTRY}/${AWS_ECR_REPOSITORY}:${REPOSITORY_TAG}" >> $GITHUB_ENV
 
     # Note: This is scaffolding. This step initialize the tutor 'env' path, which you might need
     #       if for example, you need to add Python requirements to the image
