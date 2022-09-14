@@ -41,12 +41,12 @@ jobs:
 
       # install and configure tutor and kubectl
       - name: Configure Github workflow environment
-        uses: openedx-actions/tutor-k8s-init@v0.0.1
+        uses: openedx-actions/tutor-k8s-init@v1.0.4
 
       # This action.
       # Note that aws-ecr-repo is optional. The default value is 'credentials'
       - name: Build the image and upload to AWS ECR
-        uses: openedx-actions/tutor-plugin-build-credentials@v0.1.1
+        uses: openedx-actions/tutor-plugin-build-credentials@v0.1.6
         with:
           aws-ecr-repo: credentials
 ```
