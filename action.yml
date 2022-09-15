@@ -13,6 +13,11 @@ branding:
   icon: 'cloud'
   color: 'orange'
 inputs:
+  version:
+    description: 'The version of the tutor plugin to install. Default: latest, which installs from the main branch.'
+    required: false
+    default: "latest"
+    type: string
   aws-ecr-repository:
     description: 'The name of the repository inside your AWS Elastic Container Registry (ECR) in which the newly created container will be uploaded and tagged. Defaults to "credentials"'
     required: false
