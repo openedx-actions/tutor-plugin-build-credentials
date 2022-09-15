@@ -8,6 +8,6 @@
 #
 #---------------------------------------------------------
 
-pip install git+https://github.com/lpm0073/tutor-contrib-credentials
+pip install git+https://github.com/lpm0073/tutor-contrib-credentials${{ inputs.tutor-version != 'latest' && format('@{0}', inputs.tutor-version) || '' }}
 tutor plugins enable credentials
 tutor config save --set CREDENTIALS_DOCKER_IMAGE=${DOCKER_IMAGE_CREDENTIALS}
