@@ -46,7 +46,7 @@ jobs:
       # This action.
       # Note that aws-ecr-repo is optional. The default value is 'credentials'
       - name: Build the image and upload to AWS ECR
-        uses: openedx-actions/tutor-plugin-build-credentials@v1.0.0
+        uses: openedx-actions/tutor-plugin-build-credentials@v1.0.1
         with:
           version: "latest"
           aws-ecr-repo: openedx_credentials
