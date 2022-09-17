@@ -19,10 +19,9 @@ inputs:
     default: "latest"
     type: string
   aws-ecr-repository:
-    description: 'The name of the repository inside your AWS Elastic Container Registry (ECR) in which the newly created container will be uploaded and tagged. Defaults to "credentials"'
+    description: 'The name of the repository inside your AWS Elastic Container Registry (ECR) in which the newly created container will be uploaded and tagged. Defaults to "openedx_credentials"'
     required: false
-    default: 'credentials'
-
+    default: 'openedx_credentials'
 outputs:
   docker-container-url:
     description: 'The URL of the AWS ECR Docker container that was created and uploaded'
@@ -82,7 +81,10 @@ runs:
     - name: Install plugin
       id: pip-install-plugin
       shell: bash
-      run: ${{ github.action_path }}/scripts/install-plugin.sh
+      run: |-
+        pip install git+https://github.com/lpm0073/tutor-contrib-credentials${{ inputs.tutor-version != 'latest' && format('@{0}', inputs.tutor-version) || '' }}
+        tutor plugins enable credentials
+        tutor config save
 
     - name: Build the image
       id: tutor-build-image
@@ -92,7 +94,10 @@ runs:
     - name: Push the image
       id: docker-push-image
       shell: bash
-      run: ${{ github.action_path }}/scripts/upload-to-aws-ecr.sh
+      run: |-
+        tutor images push credentials
+        docker tag ${AWS_ECR_REGISTRY_CREDENTIALS}/${AWS_ECR_REPOSITORY_CREDENTIALS}:${REPOSITORY_TAG_CREDENTIALS} ${AWS_ECR_REGISTRY_CREDENTIALS}/${AWS_ECR_REPOSITORY_CREDENTIALS}:latest
+        docker push ${AWS_ECR_REGISTRY_CREDENTIALS}/${AWS_ECR_REPOSITORY_CREDENTIALS}:latest
 
     - name: Docker image:tag
       id: docker-image
